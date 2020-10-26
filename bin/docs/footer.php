@@ -66,10 +66,10 @@
 
 
 
-    function fn_openDialogEmpleado(id){
+    function fn_openDialogProyecto(id){
         var objModal = $('#modalbody');
         $.ajax({
-            url: "./redirect.php?o=get_dialog_empleados",
+            url: "./redirect.php?o=get_dialog_carga_archivo",
             method: "POST",
             data: {
                 "codigo": id
@@ -77,24 +77,24 @@
             success: function (doc) {
                 objModal.html("");
                 objModal.html(doc);
-                $('#modalHeader').html('Ficha Empleado');
+                $('#modalHeader').html('Carga Archivo');
                 $('#modal').modal({backdrop: 'static', keyboard: false},'show');
             }
         });
     }
 
-    function fn_openDialogBitacora(id){
+    function fn_openDialogUploads(id){
         var objModal = $('#modalbody');
         $.ajax({
-            url: "./redirect.php?o=get_dialog_bitacora",
+            url: "./redirect.php?o=get_dialog_Uploads",
             method: "POST",
             data: {
-                "idCliente": id
+                "codigo": id
             },
             success: function (doc) {
                 objModal.html("");
                 objModal.html(doc);
-                $('#modalHeader').html('Bitacora');
+                $('#modalHeader').html('bitacora');
                 $('#modal').modal({backdrop: 'static', keyboard: false},'show');
             }
         });

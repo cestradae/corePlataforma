@@ -218,6 +218,103 @@ function bin_sessionCheckLogout(){
         header("Location: index.php");
     }
 }
+function is_entry_ignored($entry, $allow_show_folders, $hidden_extensions) {
+    if ($entry === basename(__FILE__)) {
+        return true;
+    }
+
+    if (is_dir($entry) && !$allow_show_folders) {
+        return true;
+    }
+
+    $ext = strtolower(pathinfo($entry, PATHINFO_EXTENSION));
+    if (in_array($ext, $hidden_extensions)) {
+        return true;
+    }
+
+    return false;
+}
+
+function rmrf($dir) {
+    if(is_dir($dir)) {
+        $files = array_diff(scandir($dir), ['.','..']);
+        foreach ($files as $file)
+            rmrf("$dir/$file");
+        rmdir($dir);
+    } else {
+        unlink($dir);
+    }
+}
+function is_recursively_deleteable($d) {
+    $stack = [$d];
+    while($dir = array_pop($stack)) {
+        if(!is_readable($dir) || !is_writable($dir))
+            return false;
+        $files = array_diff(scandir($dir), ['.','..']);
+        foreach($files as $file) if(is_dir($file)) {
+            $stack[] = "$dir/$file";
+        }
+    }
+    return true;
+}
+
+// from: http://php.net/manual/en/function.realpath.php#84012
+function get_absolute_path($path) {
+    $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
+    $parts = explode(DIRECTORY_SEPARATOR, $path);
+    $absolutes = [];
+    foreach ($parts as $part) {
+        if ('.' == $part) continue;
+        if ('..' == $part) {
+            array_pop($absolutes);
+        } else {
+            $absolutes[] = $part;
+        }
+    }
+    return implode(DIRECTORY_SEPARATOR, $absolutes);
+}
+
+function err($code,$msg) {
+    http_response_code($code);
+    echo json_encode(['error' => ['code'=>intval($code), 'msg' => $msg]]);
+    exit;
+}
+
+function asBytes($ini_v) {
+    $ini_v = trim($ini_v);
+    $s = ['g'=> 1<<30, 'm' => 1<<20, 'k' => 1<<10];
+    return intval($ini_v) * ($s[strtolower(substr($ini_v,-1))] ?: 1);
+}
+function obtenerListadoDeArchivos($directorio){
+
+    // Array en el que obtendremos los resultados
+    $res = array();
+
+    // Agregamos la barra invertida al final en caso de que no exista
+    if(substr($directorio, -1) != "/") $directorio .= "/";
+
+    // Creamos un puntero al directorio y obtenemos el listado de archivos
+    $dir = @dir($directorio) or die("getFileList: Error abriendo el directorio $directorio para leerlo");
+    while(($archivo = $dir->read()) !== false) {
+        // Obviamos los archivos ocultos
+        if($archivo[0] == ".") continue;
+        if(is_dir($directorio . $archivo)) {
+            $res[] = array(
+                "Nombre" => $directorio . $archivo . "/",
+                "size" => 0,
+                "Modificado" => filemtime($directorio . $archivo)
+            );
+        } else if (is_readable($directorio . $archivo)) {
+            $res[] = array(
+                "Nombre" => $directorio . $archivo,
+                "size" => filesize($directorio . $archivo),
+                "Modificado" => filemtime($directorio . $archivo)
+            );
+        }
+    }
+    $dir->close();
+    return $res;
+}
 function bin_getAlive(){
 
         if(!empty($_SESSION["login"]["timeLastActivity"])){

@@ -33,6 +33,34 @@ if ($operacion == 'get_data_sub_menu') {
     }
     //print $strReturn;
 }
+if ($operacion == 'viewProyectosCursos') {
+
+    $intIdCurso = (isset($_POST["id_curso"])) ? intval($_POST["id_curso"]) : 0;
+    $strNombreCurso = (isset($_POST["nombreCurso"])) ? $_POST["nombreCurso"] : "";
+
+        $strReturn = $generalViews->get_table_proyectos($intIdCurso,$strNombreCurso);
+
+    //print $strReturn;
+}
+if ($operacion == 'get_dialog_carga_archivo') {
+
+    $intIdCurso = (isset($_POST["codigo"])) ? intval($_POST["codigo"]) : 0;
+    //$strNombreCurso = (isset($_POST["nombreCurso"])) ? $_POST["nombreCurso"] : "";
+
+    $strReturn = $generalViews->view_modal_bitacora($intIdCurso);
+
+    //print $strReturn;
+}
+if ($operacion == 'get_dialog_Uploads') {
+
+
+    $intIdProyecto= (isset($_POST["codigo"])) ? intval($_POST["codigo"]) : 0;
+
+    $strReturn = $generalViews->view_modal_files($intIdProyecto);
+
+    print $strReturn;
+}
+
 if ($operacion == "getAlive") {
     bin_getAlive();
 }

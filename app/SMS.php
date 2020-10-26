@@ -52,5 +52,22 @@ class SMS
         return $arrCurso;
     }
 
+    function get_data_Proyectos($id_curso = 0){
+        global $db;
+        $strQuery = "SELECT p.proyecto, p.descripcion, p.estado FROM dbo.proyectos p
+                    INNER JOIN dbo.cursos c ON p.curso = c.curso
+                    WHERE p.estado = 1 AND  p.curso ={$id_curso}";
+        $qTMP = $db->consulta($strQuery);
+        $arrProyecto = array();
+        while ($rTMP = $db->fetch_assoc($qTMP)) {
+            $arrProyecto[$rTMP['proyecto']]= $rTMP;
+        }
+        return $arrProyecto;
+    }
+
+    function getdataTree($strpath =''){
+        return json_encode(dir_to_jstree_array($strpath));
+    }
+
 
 }

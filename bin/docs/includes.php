@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="<?php print URL; ?>assets/dist/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="<?php print URL; ?>assets/dist/plugins/toastr/toastr.min.css">
 <link rel="stylesheet" href="<?php print URL; ?>assets/dist/css/especialClass.css">
-
+<link rel="stylesheet" href="<?php print URL; ?>assets/dist/css/dropzone.css">
 
 
 
@@ -79,3 +79,5 @@
 <script src="<?php print URL; ?>assets/dist/plugins/toastr/toastr.min.js"></script>
 
 <script src="<?php print URL; ?>assets/dist/plugins/bootstrap-switch/js/bootstrap-switch.js"></script>
+
+<script src="<?php print URL; ?>assets/dist/js/dropzone.js"></script>

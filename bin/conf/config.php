@@ -11,5 +11,5 @@ $dbConfig["serverName"] = "MsSQL";
 //$dbConfig["host"] = '10.27.5.164';
 $dbConfig["host"] = 'ITCARLOSW10P\LOCALPRUEBAS';
 $dbConfig["user"] = "sa";
-$dbConfig["password"] = '';
+$dbConfig["password"] = 'coralsa2016';
 $dbConfig["db_name"] = "PLATAFORMA";
