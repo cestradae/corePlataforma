@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f028e88a-2b2d-44ce-a93f-43099f67c21d" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Upload.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/dist/css/dropzone.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/dist/js/dropzone.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/SMS.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/SMS.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/process.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/process.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/conf/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/bin/conf/config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/docs/footer.php" beforeDir="false" afterPath="$PROJECT_DIR$/bin/docs/footer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/docs/includes.php" beforeDir="false" afterPath="$PROJECT_DIR$/bin/docs/includes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/main_secure.php" beforeDir="false" afterPath="$PROJECT_DIR$/bin/main_secure.php" afterDir="false" />
-    </list>
+    <list default="true" id="f028e88a-2b2d-44ce-a93f-43099f67c21d" name="Default" comment="trabajos segunda fase" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,8 +186,16 @@
       <workItem from="1602266176941" duration="758000" />
       <workItem from="1602339580638" duration="6558000" />
       <workItem from="1603470671869" duration="11525000" />
-      <workItem from="1603584019697" duration="22131000" />
+      <workItem from="1603584019697" duration="22918000" />
     </task>
+    <task id="LOCAL-00001" summary="trabajos segunda fase">
+      <created>1603671712521</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1603671712521</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -218,6 +213,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="trabajos segunda fase" />
+    <option name="LAST_COMMIT_MESSAGE" value="trabajos segunda fase" />
   </component>
   <component name="masterDetails">
     <states>
