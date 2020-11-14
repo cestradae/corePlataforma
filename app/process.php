@@ -26,10 +26,10 @@ if ($operacion == 'get_data_sub_menu') {
 //    $strNombreMenu = (isset($_POST["nombre"])) ? $_POST["nombre"] : "";
 
     if ($intIdMenu == 1) {
-        $strReturn = $generalViews->get_Cursos();
+        $strReturn = $generalViews->get_Cursos($intIdMenu);
     }
     if ($intIdMenu == 2) {
-        $strReturn = $generalViews->get_Cursos();
+        $strReturn = $generalViews->get_Cursos($intIdMenu);
     }
     //print $strReturn;
 }
@@ -47,7 +47,7 @@ if ($operacion == 'viewProyectosCursosCat') {
     $intIdCurso = (isset($_POST["id_curso"])) ? intval($_POST["id_curso"]) : 0;
     $strNombreCurso = (isset($_POST["nombreCurso"])) ? $_POST["nombreCurso"] : "";
 
-    $strReturn = $generalViews->view_files_uploads($intIdCurso,"");
+    $strReturn = $generalViews->view_files_uploads2($intIdCurso,"",1);
 
     //print $strReturn;
 }

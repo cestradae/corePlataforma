@@ -9,7 +9,7 @@
 class SMS_views extends SMS
 {
 
-    public function get_Cursos()
+    public function get_Cursos($intIdMenu = 0)
     {
         $arrCursos = $this->get_list_cursos();
 
@@ -38,7 +38,7 @@ class SMS_views extends SMS
                                         <td><?php print $dataArray['nombreCurso'] ?></td>
                                         <td class="text-right py-0 align-middle">
                                             <div class="btn-group btn-group-sm">
-                                                <?php if($_SESSION['login']['roles'] != 2){ ?>
+                                                <?php if( $intIdMenu == 1 ){ ?>
                                                     <a href="#" class="btn btn-info" onclick="busqueda_curso(<?php print $dataArray['curso'] ?>,'<?php print $dataArray['nombreCurso'] ?>')" ><i class="fas fa-eye"></i></a>
                                                 <?php }
                                                 else{
@@ -133,8 +133,10 @@ class SMS_views extends SMS
                                     <tr>
                                         <th>Codigo Curso</th>
                                         <th>Proyecto</th>
+                                        <?php if($_SESSION['login']['roles'] != 2){ ?>
                                         <th></th>
                                         <th></th>
+                                         <?php } ?>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -153,6 +155,7 @@ class SMS_views extends SMS
                                         <tr>
                                             <td><?php print $strDataProyectos['proyecto']; ?></td>
                                             <td><?php print $strDataProyectos['descripcion']; ?></td>
+                                            <?php if($_SESSION['login']['roles'] != 2){ ?>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="...">
                                                     <button type="button" class="btn btn-dark" <?php print $strHide; ?> onclick="fn_openDialogProyecto(<?php print $strDataProyectos['proyecto']; ?>)"  title="Agregar Documento" data-toggle="tooltip"> <i class="fas fa-laptop-house"></i></button>
@@ -163,6 +166,7 @@ class SMS_views extends SMS
                                                     <button type="button" class="btn btn-dark" onclick="fn_openUploads(<?php print $strDataProyectos['proyecto']; ?>)"  title="Ver Documentos o Archivos" data-toggle="tooltip"> <i class="fas fa-laptop-code"></i></button>
                                                 </div>
                                             </td>
+                                            <?php } ?>
                                         </tr>
                                         <?php
                                     }
@@ -237,7 +241,7 @@ class SMS_views extends SMS
     }
     public function view_files_uploads($intCodigo, $pathFiles="")
     {
-        if ($_SESSION['login']['roles'] != 2) {
+
             ?>
             <div class="row">
                 <div class="col-lg-8">
@@ -311,8 +315,12 @@ class SMS_views extends SMS
                 </div>
             </div>
             <?php
-        }
-        else{
+
+    }
+    public function view_files_uploads2($intCodigo, $pathFiles="")
+    {
+
+
             $arrPro = $this->getuploads();
             //bin_debug($arrPro);
             ?>
@@ -350,7 +358,7 @@ class SMS_views extends SMS
                                     $color = "";
                                     //bin_debug($dataFiles);
 
-                                        $Usuario = $this->getUserName($dataFiles['name']);
+                                    $Usuario = $this->getUserName($dataFiles['name']);
 
                                     if ($dataFiles['type'] == "folder") {
                                         $type = "fa-folder";
@@ -363,7 +371,7 @@ class SMS_views extends SMS
                                     ?>
                                     <tr>
                                         <td>
-                                            <a href="#"><span style="color:<?php print $color; ?> "><i class="fas <?php print $type; ?>"></i>  <?php print $Usuario['nombre']; ?></span></a>
+                                            <a href="#"><span style="color:<?php print $color; ?> " onclick="myfnData('<?php print $dataFiles['path'] ?>','<?php print $dataFiles['name'] ?>','<?php print $dataFiles['type'] ?>')"><i class="fas <?php print $type; ?>"></i>  <?php print $Usuario['nombre']; ?></span></a>
                                         </td>
                                         <td>
                                             <a href="download.php?file=fichero.png">Descargar fichero</a>
@@ -380,6 +388,6 @@ class SMS_views extends SMS
                 </div>
             </div>
             <?php
-        }
+
     }
 }
