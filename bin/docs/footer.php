@@ -99,6 +99,21 @@
             }
         });
     }
+    function myfnData(url,nombre,type){
+        //console.log(url+nombre);
+        if (type == "folder"){
+            $.ajax({
+                url: "./redirect.php?o=get_Uploads",
+                method: "POST",
+                data: {
+                    "URL": url
+                },
+                success: function (doc) {
+                    $(".container-fluid").html(doc);
+                }
+            });
+        }
+    }
 
 
 </script>

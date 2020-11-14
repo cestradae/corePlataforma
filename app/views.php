@@ -30,14 +30,24 @@ class SMS_views extends SMS
                             </thead>
                             <tbody>
                             <?php
+                            //bin_debug($_SESSION['login']);
                                 foreach ($arrCursos as $key => $dataArray) {
+
                                     ?>
                                     <tr>
                                         <td><?php print $dataArray['nombreCurso'] ?></td>
                                         <td class="text-right py-0 align-middle">
                                             <div class="btn-group btn-group-sm">
-                                                <a href="#" class="btn btn-info" onclick="busqueda_curso(<?php print $dataArray['curso'] ?>,'<?php print $dataArray['nombreCurso'] ?>')" ><i class="fas fa-eye"></i></a>
+                                                <?php if($_SESSION['login']['roles'] != 2){ ?>
+                                                    <a href="#" class="btn btn-info" onclick="busqueda_curso(<?php print $dataArray['curso'] ?>,'<?php print $dataArray['nombreCurso'] ?>')" ><i class="fas fa-eye"></i></a>
+                                                <?php }
+                                                else{
+                                                    ?>
+                                                    <a href="#" class="btn btn-info" onclick="busqueda_proyectosCurso(<?php print $dataArray['curso'] ?>,'<?php print $dataArray['nombreCurso'] ?>')" ><i class="fas fa-eye"></i></a>
 
+                                                <?php
+                                                }
+                                                ?>
                                             </div>
                                         </td>
                                     </tr>
@@ -65,13 +75,31 @@ class SMS_views extends SMS
                 });
 
             }
+            function busqueda_proyectosCurso(id_curso,nombreCurso){
+                $.ajax({
+                    url: "./redirect.php?o=viewProyectosCursosCat",
+                    method: "POST",
+                    data: {
+                        "id_curso": id_curso,
+                        "nombreCurso":nombreCurso
+                    },
+                    beforeSend: function(){
+                    },
+                    success: function(doc) {
+                        $(".container-fluid").html(doc);
+                    }
+                });
+
+            }
         </script>
         <?php
     }
     public function get_table_proyectos($strCodigo = "", $srtNombre = "")
     {
         $arrListaProyectos = $this->get_data_Proyectos($strCodigo);
-        //bin_debug($arrListaEmpleados);
+        //bin_debug($_SESSION['login']);
+
+
         ?>
         <section class="content-header">
             <div class="container-fluid">
@@ -91,45 +119,78 @@ class SMS_views extends SMS
                     </h3>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                            <tr>
-                                <th>Codigo Curso</th>
-                                <th>Proyecto</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            foreach ($arrListaProyectos as $intProyectos => $strDataProyectos){
-                                ?>
-                                <tr>
-                                    <td><?php print $strDataProyectos['proyecto']; ?></td>
-                                    <td><?php print $strDataProyectos['descripcion']; ?></td>
-                                    <td>
-                                        <div class="btn-group" role="group" aria-label="...">
-                                            <button type="button" class="btn btn-dark" onclick="fn_openDialogProyecto(<?php print $strDataProyectos['proyecto']; ?>)"  title="Agregar Documento" data-toggle="tooltip"> <i class="fas fa-laptop-house"></i></button>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group" role="group" aria-label="...">
-                                            <button type="button" class="btn btn-dark" onclick="fn_openDialogUploads(<?php print $strDataProyectos['proyecto']; ?>)"  title="Ver Documentos o Archivos" data-toggle="tooltip"> <i class="fas fa-laptop-code"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <?php
-                            }
-                            ?>
-                            </tbody>
-                        </table>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn-primary">Agregar Proyecto</button>
+                        </div>
+                    </div>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>Codigo Curso</th>
+                                        <th>Proyecto</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    foreach ($arrListaProyectos as $intProyectos => $strDataProyectos){
+                                        $strHide ="";
+                                        if($_SESSION['login']['roles'] == 3){
+                                            $intCount = $this->getInfoProyecto($strDataProyectos['proyecto'],$_SESSION['login']['user_id']);
+                                            if($intCount['conteo'] != 0){
+                                                $strHide = "hidden";
+                                            }else {
+                                                $strHide = "";
+                                            }
+                                        }
+                                        ?>
+                                        <tr>
+                                            <td><?php print $strDataProyectos['proyecto']; ?></td>
+                                            <td><?php print $strDataProyectos['descripcion']; ?></td>
+                                            <td>
+                                                <div class="btn-group" role="group" aria-label="...">
+                                                    <button type="button" class="btn btn-dark" <?php print $strHide; ?> onclick="fn_openDialogProyecto(<?php print $strDataProyectos['proyecto']; ?>)"  title="Agregar Documento" data-toggle="tooltip"> <i class="fas fa-laptop-house"></i></button>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group" aria-label="...">
+                                                    <button type="button" class="btn btn-dark" onclick="fn_openUploads(<?php print $strDataProyectos['proyecto']; ?>)"  title="Ver Documentos o Archivos" data-toggle="tooltip"> <i class="fas fa-laptop-code"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
             </div>
         </div>
         <script>
             $('#dataTable').DataTable();
             $('[data-toggle="tooltip"]').tooltip();
+
+            function fn_openUploads(id){
+
+                $.ajax({
+                    url: "./redirect.php?o=get_Uploads",
+                    method: "POST",
+                    data: {
+                        "codigo": id
+                    },
+                    success: function (doc) {
+                        $(".container-fluid").html(doc);
+                    }
+                });
+            }
         </script>
         <?php
     }
@@ -174,47 +235,151 @@ class SMS_views extends SMS
         </script>
         <?php
     }
-    public function view_modal_files($intCodigo)
+    public function view_files_uploads($intCodigo, $pathFiles="")
     {
-        //bin_debug($_SESSION['login']);
-        ?>
-        <div class="row">
-            <div class="col-lg-12">
-                <?php
-                $arrFiles = obtenerListadoDeArchivos("./uploads/".$intCodigo."/".$_SESSION['login']['user_id']."/");
+        if ($_SESSION['login']['roles'] != 2) {
+            ?>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card card-default color-palette-box">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-tag"></i>
+                                Proyectos
+                            </h3>
+                        </div>
+                        <div class="card-body">
 
-
-                //bin_debug($arrFiles);
-                ?>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                    <th>URL</th>
-                    <th>Size</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                            $arrSplit = array();
-                            foreach($arrFiles as $keyFiles => $dataFiles){
-                                $arrSplit = explode("/", $dataFiles["Nombre"]);
-                                ?>
+                            <?php
+                            //$arrFiles = obtenerListadoDeArchivos("./uploads/".$intCodigo."/".$_SESSION['login']['user_id']."/");
+                            $path = "";
+                            if (!empty($pathFiles)) {
+                                $path = $pathFiles;
+                            } else {
+                                $path = "./uploads/" . $intCodigo . "/" . $_SESSION['login']['user_id'];
+                            }
+                            $arrFiles = scan($path);
+                            $arrPath = explode('/', $pathFiles);
+                            $pathimplode = "";
+                            for ($i = 0; $i < count($arrPath) - 1; $i++) {
+                                $pathimplode = $pathimplode . $arrPath[$i] . "/";
+                            }
+                            //($pathimplode);
+                            ?>
+                            <table>
+                                <thead>
                                 <tr>
-                                    <td><a href="$"><?php print $arrSplit[count($arrSplit)-2]; ?> </a></td>
-                                    <td><?php print $dataFiles["size"]; ?> </td>
+                                    <th>Archivos / Carpetas</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><a href="#" style="color: red"><span
+                                                    onclick="myfnData('<?php print $pathimplode ?>','back','folder')"><i
+                                                        class="fas fa-file-upload"></i>  ...</span></a></td>
                                 </tr>
                                 <?php
-                            }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-lg-6"></div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-        </div>
-       <?php
+                                foreach ($arrFiles as $keyFiles => $dataFiles) {
+                                    //bin_debug($dataFiles);
+                                    $type = "";
+                                    $color = "";
 
+                                    if ($dataFiles['type'] == "folder") {
+                                        $type = "fa-folder";
+                                        $color = "";
+
+                                    } else {
+                                        $type = "fa-file";
+                                        $color = "black";
+                                    }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <a href="#"><span style="color:<?php print $color; ?> "
+                                                              onclick="myfnData('<?php print $dataFiles['path'] ?>','<?php print $dataFiles['name'] ?>','<?php print $dataFiles['type'] ?>')"><i
+                                                            class="fas <?php print $type; ?>"></i>  <?php print $dataFiles['name']; ?></span></a>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+        else{
+            $arrPro = $this->getuploads();
+            //bin_debug($arrPro);
+            ?>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card card-default color-palette-box">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-tag"></i>
+                                Proyectos
+                            </h3>
+                        </div>
+                        <div class="card-body">
+
+                            <?php
+                            foreach ($arrPro as $key => $arrData) {
+
+                                $path = "./uploads/" . $key ;
+                                $arrFiles = scan($path);
+
+                            }
+                            //($pathimplode);
+                            ?>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Archivos / Carpetas</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <?php
+                                foreach ($arrFiles as $keyFiles => $dataFiles) {
+                                    $type = "";
+                                    $color = "";
+                                    //bin_debug($dataFiles);
+
+                                        $Usuario = $this->getUserName($dataFiles['name']);
+
+                                    if ($dataFiles['type'] == "folder") {
+                                        $type = "fa-folder";
+                                        $color = "";
+
+                                    } else {
+                                        $type = "fa-file";
+                                        $color = "black";
+                                    }
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <a href="#"><span style="color:<?php print $color; ?> "><i class="fas <?php print $type; ?>"></i>  <?php print $Usuario['nombre']; ?></span></a>
+                                        </td>
+                                        <td>
+                                            <a href="download.php?file=fichero.png">Descargar fichero</a>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-6"></div>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
     }
 }

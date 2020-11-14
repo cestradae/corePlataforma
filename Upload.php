@@ -2,7 +2,7 @@
 include_once("bin/main.php");
 
 global $db;
-$ds = DIRECTORY_SEPARATOR;
+$ds = "/";
 $storeFolder = 'uploads/';
 
 if (!empty($_FILES)) {

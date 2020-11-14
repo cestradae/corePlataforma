@@ -298,13 +298,13 @@ function obtenerListadoDeArchivos($directorio){
     while(($archivo = $dir->read()) !== false) {
         // Obviamos los archivos ocultos
         if($archivo[0] == ".") continue;
-        if(is_dir($directorio . $archivo)) {
+        if(@is_dir($directorio . $archivo)) {
             $res[] = array(
                 "Nombre" => $directorio . $archivo . "/",
                 "size" => 0,
                 "Modificado" => filemtime($directorio . $archivo)
             );
-        } else if (is_readable($directorio . $archivo)) {
+        } else if (@is_readable($directorio . $archivo)) {
             $res[] = array(
                 "Nombre" => $directorio . $archivo,
                 "size" => filesize($directorio . $archivo),
@@ -315,6 +315,61 @@ function obtenerListadoDeArchivos($directorio){
     $dir->close();
     return $res;
 }
+
+function scan($dir){
+
+    $files = array();
+
+    // Is there actually such a folder/file?
+    if(file_exists($dir)){
+
+        foreach(scandir($dir) as $f) {
+
+            if(!$f || $f[0] == '.') {
+                continue; // Ignore hidden files
+            }
+
+            if(is_dir($dir . '/' . $f)) {
+
+                // The path is a folder
+
+                $files[] = array(
+                    "name" => $f,
+                    "type" => "folder",
+                    "path" => $dir . '/' . $f,
+                    "items" => scan($dir . '/' . $f) // Recursively get the contents of the folder
+                );
+            }
+
+            else {
+
+                // It is a file
+
+                $files[] = array(
+                    "name" => $f,
+                    "type" => "file",
+                    "path" => $dir . '/' . $f,
+                    "size" => filesize($dir . '/' . $f) // Gets the size of this file
+                );
+            }
+        }
+
+    }
+
+    return $files;
+}
+
+function compare_directories($dir1, $dir2)
+{
+    $output = shell_exec("diff --brief ".$dir1." ".$dir2." 2>&1");
+
+    if (strlen($output) > 0) {
+        return false;
+    }
+
+    return true;
+}
+
 function bin_getAlive(){
 
         if(!empty($_SESSION["login"]["timeLastActivity"])){

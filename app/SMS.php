@@ -39,11 +39,19 @@ class SMS
 
     function get_list_cursos($curso = 0)
     {
-        if($curso != 0){
-            $strFiltro = $curso != 0 ?"WHERE c.curso = {$curso} ": "";
+        if ($curso != 0) {
+            $strFiltro = $curso != 0 ? "WHERE c.curso = {$curso} " : "";
         }
         global $db;
-        $strQuery = "SELECT c.curso,c.descripcion nombreCurso, c.ciclo  FROM dbo.cursos c";
+        $strDato ="";
+        if ($_SESSION['login']['roles'] == 2){
+            $strDato = " inner join cursosCatedratico cc on c.curso = cc.idcurso where cc.idusuario = {$_SESSION['login']['user_id']}";
+        }
+        else {
+            $strDato="";
+        }
+        $strQuery = "SELECT c.curso,c.descripcion nombreCurso, c.ciclo  FROM dbo.cursos c
+                     {$strDato}";
         $qTMP = $db->consulta($strQuery);
         $arrCurso = array();
         while ($rTMP = $db->fetch_assoc($qTMP)) {
@@ -69,5 +77,45 @@ class SMS
         return json_encode(dir_to_jstree_array($strpath));
     }
 
+    function getInfoProyecto($intidpro = 0,$intidUser = 0){
+        global $db;
+        $strQuery = "select count(*) conteo from uploads where proyecto = {$intidpro} and usuario_id = {$intidUser}";
+        $qTMP = $db->consulta($strQuery);
+        $intContador = array();
+        $rTMP = $db->fetch_assoc($qTMP);
+        $intContador= $rTMP;
+
+        return $intContador;
+    }
+
+    function getuploads(){
+        global $db;
+        $strQuery = "SELECT u.url, p.curso,u.proyecto,u2.nombre,u.usuario_id FROM dbo.uploads u	 
+                    INNER JOIN dbo.proyectos p	ON u.proyecto = p.proyecto
+                    INNER JOIN dbo.cursosCatedratico cc	ON cc.idCurso = p.curso	
+                    INNER JOIN dbo.usuarios u2	ON	u.usuario_id = u2.usuario_id
+                    WHERE cc.idUsuario	 = {$_SESSION['login']['user_id']}
+                    GROUP BY u.url, p.curso,u.proyecto,u2.nombre,u.usuario_id ";
+        $qTMP = $db->consulta($strQuery);
+        $arrProyecto = array();
+        while ($rTMP = $db->fetch_assoc($qTMP)) {
+            $arrProyecto[$rTMP['proyecto']][$rTMP['usuario_id']]= $rTMP;
+        }
+
+        return $arrProyecto;
+    }
+
+    function getUserName($idUser = 0){
+        global $db;
+        $strQuery = "SELECT nombre FROM usuarios
+                    WHERE usuario_id	 = {$idUser}
+                    ";
+        $qTMP = $db->consulta($strQuery);
+        $strUsuario = "";
+        $rTMP = $db->fetch_assoc($qTMP);
+        $strUsuario= $rTMP;
+
+        return $strUsuario;
+    }
 
 }

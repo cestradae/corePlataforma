@@ -29,7 +29,7 @@ if ($operacion == 'get_data_sub_menu') {
         $strReturn = $generalViews->get_Cursos();
     }
     if ($intIdMenu == 2) {
-
+        $strReturn = $generalViews->get_Cursos();
     }
     //print $strReturn;
 }
@@ -42,6 +42,15 @@ if ($operacion == 'viewProyectosCursos') {
 
     //print $strReturn;
 }
+if ($operacion == 'viewProyectosCursosCat') {
+
+    $intIdCurso = (isset($_POST["id_curso"])) ? intval($_POST["id_curso"]) : 0;
+    $strNombreCurso = (isset($_POST["nombreCurso"])) ? $_POST["nombreCurso"] : "";
+
+    $strReturn = $generalViews->view_files_uploads($intIdCurso,"");
+
+    //print $strReturn;
+}
 if ($operacion == 'get_dialog_carga_archivo') {
 
     $intIdCurso = (isset($_POST["codigo"])) ? intval($_POST["codigo"]) : 0;
@@ -51,12 +60,10 @@ if ($operacion == 'get_dialog_carga_archivo') {
 
     //print $strReturn;
 }
-if ($operacion == 'get_dialog_Uploads') {
-
-
+if ($operacion == 'get_Uploads') {
     $intIdProyecto= (isset($_POST["codigo"])) ? intval($_POST["codigo"]) : 0;
-
-    $strReturn = $generalViews->view_modal_files($intIdProyecto);
+    $strUrl = (isset($_POST["URL"])) ? $_POST["URL"] : "";
+    $strReturn = $generalViews->view_files_uploads($intIdProyecto, $strUrl);
 
     print $strReturn;
 }
