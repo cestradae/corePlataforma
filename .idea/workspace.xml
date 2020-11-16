@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f028e88a-2b2d-44ce-a93f-43099f67c21d" name="Default" comment="trabajos ultima fase">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/process.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/process.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -158,7 +156,9 @@
       <workItem from="1603470671869" duration="11525000" />
       <workItem from="1603584019697" duration="22918000" />
       <workItem from="1604504440329" duration="7682000" />
-      <workItem from="1605286988903" duration="30696000" />
+      <workItem from="1605286988903" duration="30824000" />
+      <workItem from="1605399203674" duration="18000" />
+      <workItem from="1605497664346" duration="1033000" />
     </task>
     <task id="LOCAL-00001" summary="trabajos segunda fase">
       <created>1603671712521</created>
@@ -174,7 +174,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605396181599</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="trabajos ultima fase">
+      <created>1605397882535</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1605397882535</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
